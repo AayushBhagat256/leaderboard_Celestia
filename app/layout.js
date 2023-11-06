@@ -1,7 +1,9 @@
 import { Inter } from 'next/font/google'
+import { Audiowide } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
+
 
 export const metadata = {
   title: 'Create Next App',
@@ -10,8 +12,22 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html>
+      <head>
+      <link rel="preconnect" href="https://fonts.gstatic.com" />
+      <link href="https://fonts.googleapis.com/css2?family=Your-Font-Name&display=swap" rel="stylesheet" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Roboto:wght@700&display=swap" rel="stylesheet"></link>
+      </head>
+      <body>
+        <div className='main'>
+          <div className="gradient" />
+        </div>
+        <main className='app'>
+          {children}
+        </main>
+      </body>
     </html>
   )
 }
