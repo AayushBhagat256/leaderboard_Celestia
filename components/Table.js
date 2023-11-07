@@ -1,11 +1,14 @@
 "use client"
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import next from 'next'
+import LoadingAnimation from './Loading'
 
 const TableBoard = () => {
+    const [response, setResponse] = useState([])
+    const [loading,setLoading] = useState(false)
     const getSheets = () => {
-
+        setLoading(false)
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
@@ -16,7 +19,9 @@ const TableBoard = () => {
         axios.request(config)
             .then((response) => {
                 console.log(JSON.stringify(response.data));
-                alert("mil gaya")
+                setResponse(response.data)
+                // alert("mil gaya")
+                setLoading(true)
             })
             .catch((error) => {
                 console.log(error);
@@ -51,42 +56,47 @@ const TableBoard = () => {
                         <th scope="col" className="px-6 py-3 text-xl">
                             Points
                         </th>
+                        <th scope="col" className="px-6 py-3 text-xl">
+                            # RedBulls
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-xl">
+                            # Tech game played
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-xl">
+                            # Non Tech game played
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            hello
-                        </th>
-                        <td className="px-6 py-4">
-                            Silver
-                        </td>
-                        <td className="px-6 py-4">
-                            Laptop
-                        </td>
-                    </tr>
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            hello
-                        </th>
-                        <td className="px-6 py-4">
-                            White
-                        </td>
-                        <td className="px-6 py-4">
-                            Laptop PC
-                        </td>
-                    </tr>
-                    <tr className="bg-white dark:bg-gray-800">
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            hello
-                        </th>
-                        <td className="px-6 py-4">
-                            Black
-                        </td>
-                        <td className="px-6 py-4">
-                            Accessories
-                        </td>
-                    </tr>
+                    {
+                        loading ? (
+                            response.slice(0, 8).map(data => (
+                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {data?.Rank}
+                                </th>
+                                <td className="px-6 py-4">
+                                    {data?.Team_Name}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {data?.Points}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {data?.NoofRedBulls}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {data?.Nooftechgamesplayed}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {data?.Noofnontechgamesplayed}
+                                </td>
+                            </tr>
+                        ))
+                        ) : (
+                            <LoadingAnimation/>
+                        )
+                        
+                    }
                 </tbody>
             </table>
         </div>
